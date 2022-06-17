@@ -132,12 +132,14 @@ export default function Home() {
   const [play] = useSound(noise, { volume: formik.values.volume });
 
   const handleClick = (url) => {
-    console.log("url", url);
-    setNoise(url);
-    play();
+    if (formik.values.power) {
+      console.log("url", url);
+      setNoise(url);
+      play();
+    }
   };
 
-  console.log("formik", formik.values);
+  //console.log("formik", formik.values);
 
   return (
     <div>
@@ -185,6 +187,7 @@ export default function Home() {
             </label>
           </div>
           <div>
+            volume
             <input
               type="range"
               id="volume"
