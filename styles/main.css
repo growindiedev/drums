@@ -67,16 +67,15 @@
   -webkit-transition: .4s;
   transition: .4s;
 }
-
-input:checked + .slider {
+.switch:checked + .slider {
   background-color: #2196F3;
 }
 
-input:focus + .slider {
+.switch:focus + .slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+.switch:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);

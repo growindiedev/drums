@@ -1,8 +1,12 @@
 import useSound from "use-sound";
 import { useState } from "react";
+import { useFormik } from "formik";
 
 export default function Home() {
   const [noise, setNoise] = useState();
+  //const [volume, setVolume] = useState(0.5);
+  const [bank, setBank] = useState();
+
   const bankOne = [
     {
       keyCode: 81,
@@ -117,34 +121,81 @@ export default function Home() {
     },
   ];
 
-  const [play] = useSound(noise);
+  const formik = useFormik({
+    initialValues: {
+      power: false,
+      bank: false,
+      volume: 1,
+    },
+  });
+
+  const [play] = useSound(noise, { volume: formik.values.volume });
+
   const handleClick = (url) => {
     console.log("url", url);
     setNoise(url);
     play();
   };
 
+  console.log("formik", formik.values);
+
   return (
     <div>
       <div id="drum-machine" className="container">
         <div className="drum-container">
-          {bankOne.map((btn) => (
-            <button key={btn.id} onClick={(e) => handleClick(btn.url)}>
-              {btn.keyTrigger}
-            </button>
-          ))}
+          {formik.values.bank
+            ? bankOne.map((btn) => (
+                <button key={btn.id} onClick={(e) => handleClick(btn.url)}>
+                  {btn.keyTrigger}
+                </button>
+              ))
+            : bankTwo.map((btnn) => (
+                <button key={btnn.id} onClick={(e) => handleClick(btnn.url)}>
+                  {btnn.keyTrigger}
+                </button>
+              ))}
         </div>
         <div className="control-container">
-          <label className="switch">
-            <input type="checkbox" />
-            <span className="slider"></span>
-          </label>
-          <div></div>
-          <label className="switch">
-            <input type="checkbox" />
-            <span className="slider"></span>
-          </label>
-          <div></div>
+          <div className="bank-container">
+            Bank
+            <label className="switch">
+              <input
+                type="checkbox"
+                id="bank"
+                name="bank"
+                onChange={formik.handleChange}
+                className="switch"
+                value={formik.values.bank}
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
+          <div className="power-container">
+            Power
+            <label className="switch">
+              <input
+                type="checkbox"
+                id="power"
+                name="power"
+                onChange={formik.handleChange}
+                className="switch"
+                value={formik.values.power}
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
+          <div>
+            <input
+              type="range"
+              id="volume"
+              name="volume"
+              min={0}
+              max={1}
+              step={0.02}
+              value={formik.values.volume}
+              onChange={formik.handleChange}
+            />
+          </div>
         </div>
       </div>
     </div>
